@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8">
+
+    {% if title %}
+    <title>NightChat: {{ title }}</title>
+    {% else %}
+    <title>NightChat</title>
+    {% endif %}
+
+    <link rel="stylesheet" href="../static/css/style.css">
+
+  </head>
+  <body>
+
+    <div class="wrapper">
+
+      {% if error %}
+      <div class="error">
+        <marquee><p>Error: {{error}}</p></marquee>
+      </div>
+      {%endif%}
+
+      <div class="header">
+      <a href="/index" class="title">Night Chat</a>
+        <a href="/logout"><img class="logout-button" src="../static/media/logout.png" alt="выйти"></a>
+      </div>
+
+      <hr>
+
+      <div class="content">
+
+
+        <div class="chat">
+
+          <div class="chat-messages conteiner">
+
+            <div class="msg">
+              <span class="msg-name">owl</span>
+              <span class="msg-text">в путь, к вольхалле!</span>
+            </div>
+
+            <br>
+
+            <div class="msg">
+              <span class="msg-name">light</span>
+              <span class="msg-text">к вольхалле!!1!</span>
+            </div>
+
+            <br>
+
+          </div>
+
+          <div class="chat-input">
+            <textarea name="chat-input-textarea" class="chat-input-textarea" rows="8" cols="80"></textarea>
+            <button type="button" name="chat-input-post" class="chat-input-post">post</button>
+          </div>
+
+        </div>
+
+      </div>
+
+      <hr>
+
+      <div class="footer">
+        <p>aaaammonte@gmail.com</p>
+        <p>twitter: @aaaammon</p>
+      </div>
+
+    </div>
+
+  </body>
+</html>

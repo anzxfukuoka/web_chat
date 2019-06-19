@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8">
+
+    {% if title %}
+    <title>NightChat: {{ title }}</title>
+    {% else %}
+    <title>NightChat</title>
+    {% endif %}
+
+    <link rel="stylesheet" href="../static/css/style.css">
+
+    <title></title>
+  </head>
+  <body>
+
+    {% if error %}
+    <div class="error">
+      <marquee><p>Error: {{error}}</p></marquee>
+    </div>
+    {%endif%}
+
+    <div class="big-conteiner">
+      <form class="login-form" action="#" method="post">
+        <input type="text" name="username" class="input-username" value="">
+        <input type="submit" name="submit-button" class="input-button" value="enter">
+      </form>
+    </div>
+
+  </body>
+</html>

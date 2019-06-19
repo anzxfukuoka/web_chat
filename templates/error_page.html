@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="ru" >
+  <head>
+    <meta charset="utf-8">
+
+    {% if title %}
+    <title>NightChat: {{ title }}</title>
+    {% else %}
+    <title>NightChat</title>
+    {% endif %}
+
+    <link rel="stylesheet" href="../static/css/style.css">
+
+  </head>
+  <body>
+
+    <div class="big-conteiner">
+      <h1>{{error.code}}</h1>
+      <p>{{error.msg}}</p>
+      <hr>
+      <a href="/index">Главная</a>
+    </div>
+
+  </body>
+</html>

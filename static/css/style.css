@@ -1,0 +1,261 @@
+*{
+	box-sizing: border-box;
+}
+
+:root {
+  --main-color: #660fff;
+	--link-color: #66f444;
+	--clear: #00000000;
+	--clear-black: #00000088;
+	--glow-color-1: #70F570;
+	--glow-color-2: #07F7F7;
+
+	--content-width: 1024px;
+  --normal-font-size: 16px;
+  --medium-font-size: 18px;
+  --big-font-size: 20px;
+}
+
+body, html{
+  height:100%
+}
+
+body{
+  background: url(../media/background/background_15.gif) repeat #444;
+	background-size: cover;
+	background-position: center;
+	background-attachment: fixed;
+	background-repeat: no-repeat;
+	font-family: monospace;
+	font-style: normal;
+	font-size: var(--normal-font-size);
+	color: #fff;
+
+	margin: 0;
+	padding: 0;
+	/*font-variant: small-caps;*/
+}
+
+a, a:visited{
+  color: var(--link-color);
+  text-decoration: none;
+}
+
+a:hover{
+  color: #fff;
+  text-shadow: 0 0 10px var(--link-color);
+  text-decoration: underline;
+}
+
+.wrapper{
+  max-width: var(--content-width);
+  margin: 10px auto;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  height: 100%;
+}
+
+
+.wrapper > hr{
+  width: var(--content-width);
+}
+
+/* --- HEADER --- */
+
+.header{
+  width: 100%;
+}
+
+.title{
+	text-align: center;
+	font-variant: small-caps;
+  font-size: var(--big-font-size);
+  display: inline;
+  color: #fff;
+}
+
+.title:hover{
+  text-shadow: 0 0 10px #fff, 0 0 20px var(--main-color);
+  text-decoration: none;
+}
+
+.logout-button{
+  width: var(--big-font-size);
+  height: var(--big-font-size);
+  display: inline;
+  float: right;
+}
+
+.logout-button:hover{
+  border-radius: 50%;
+  background: var(--main-color);
+  box-shadow: 0 0 10px var(--main-color);
+}
+
+/* --- CONTENT --- */
+
+.content{
+  width: 100%;
+  margin-top: 10px;
+  margin-bottom: 10px;
+
+  flex: 1 1 auto;
+  flex-basis: fill;
+}
+
+/* --- FOOTER --- */
+
+.footer{
+	text-align: center;
+	font-size: var(--normal-font-size);
+	font-variant: small-caps;
+}
+
+/* ??? */
+
+.conteiner{
+  background-color: var(--clear-black);
+  border: 1px solid #fff;
+  border-radius: 4px;
+}
+
+.big-conteiner{
+  background-color: var(--clear-black);
+  border: 1px solid #fff;
+  border-radius: 4px;
+  width: 666px;
+  margin: 10px auto;
+  padding: 10px;
+}
+
+/* --- CHAT ---*/
+
+.chat{
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+/*chat messages*/
+
+.chat-messages{
+  flex: 1 1 auto;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.msg{
+  max-width: 40%;
+  margin-bottom: 10px;
+  padding: 10px;
+
+  background-color: var(--clear-black);
+  border: 1px solid #fff;
+  border-radius: 4px;
+
+  display: inline-block;
+}
+
+
+.msg-name{
+  color: var(--main-color);
+  margin-bottom: 4px;
+}
+
+.msg-name:after{
+  content: ": ";
+}
+
+.msg-text{
+
+}
+
+/*chat-input*/
+
+.chat-input{
+  margin: 0 auto;
+}
+
+.chat-input-textarea{
+  width: 666px;
+  padding: 10px;
+  border: 1px solid #fff;
+  border-radius: 4px;
+  background: #000;
+  color: #fff;
+  font-size: var(--normal-font-size);
+  resize: none;
+  outline: none !important;
+}
+
+.chat-input-post{
+  width: 666px;
+  padding: 4px;
+  background-color: var(--clear-black);
+  border: 1px solid #fff;
+  border-radius: 4px;
+  color: var(--main-color);
+  font-size: var(--normal-font-size);
+  font-variant: small-caps;
+  display: block;
+  outline: none !important;
+}
+
+.chat-input-post:hover{
+  background-color: var(--main-color);
+  color: #fff;
+}
+
+/* --- LOGIN ---*/
+
+.input-username, .input-button{
+  padding: 4px;
+  font-size: var(--medium-font-size);
+  width: 100%;
+  background: #000;
+  border: 1px solid #fff;
+  border-radius: 4px;
+  outline: none !important;
+  display: block;
+}
+
+.login-form{
+  width: 80%;
+  margin: 0 auto;
+}
+
+.input-username{
+  margin-bottom: 10px;
+  color: #fff;
+  text-align: center;
+}
+
+.input-button{
+  color: var(--main-color);
+  font-variant: small-caps;
+}
+
+.input-button:hover{
+  background-color: var(--main-color);
+  color: #fff;
+}
+
+
+
+/* --- ERR --- */
+
+.error, marquee{
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  color: #f00;
+  margin-bottom: 10px;
+}
+
+marquee{
+  background-color: #000;
+}
