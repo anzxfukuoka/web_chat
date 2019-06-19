@@ -43,13 +43,35 @@ def logout():
 #chat
 #js + socketio
 
+#username, status(online/offline)
+users = {}
+#username, text
+messages = {}
+
+#проблемс:
+#юзкр ушел со странички/разлогинелся, но все еще коннекткд
+
 @socketio.on('message')
 def handle_message(message):
-    print('received message: ' + session["username"] + " : " + message)
+    print(session["username"] + " : " + message)
     #send(json, json=True)
     #broadcasting
     json = {'username': session["username"], "text": message}
     emit('new message', json, broadcast=True)
+
+
+@socketio.on('connect')
+def on_connect():
+    print(session["username"] + " connected")
+    emit('new sys message', session["username"] + " connected", broadcast=True)
+    pass
+
+@socketio.on('disconnect')
+def on_disconnect():
+    print(session["username"] + " disconnected")
+    emit('new sys message', session["username"] + " disconnected", broadcast=True)
+    #timeout to delete from users
+    pass
 
 
 #tripcode

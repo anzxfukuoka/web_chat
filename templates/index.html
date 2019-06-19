@@ -34,27 +34,26 @@
 
         <div class="chat">
 
-          <div class="chat-messages conteiner">
+          <div class="chat-messages conteiner" id="chat_messages">
 
+            <!-- message -->
+            <!--
             <div class="msg">
               <span class="msg-name">owl</span>
               <span class="msg-text">в путь, к вольхалле!</span>
             </div>
-
             <br>
+          -->
 
-            <div class="msg">
-              <span class="msg-name">light</span>
-              <span class="msg-text">к вольхалле!!1!</span>
-            </div>
-
-            <br>
-
-          </div>
+          <!-- sys message -->
+          <!--
+          <p class="sys-msg">вы вошли</p>
+          -->
+        </div>
 
           <div class="chat-input">
-            <textarea name="chat-input-textarea" class="chat-input-textarea" rows="8" cols="80"></textarea>
-            <button type="button" name="chat-input-post" class="chat-input-post">post</button>
+            <textarea name="chat-input-textarea" class="chat-input-textarea" id="chat-input-textarea" rows="8" cols="80" onkeydown="if(event.keyCode == 13){send_message(); return false;}"></textarea>
+            <button type="button" name="chat-input-post" class="chat-input-post" onclick="send_message();">post</button>
           </div>
 
         </div>
@@ -77,12 +76,38 @@
 
     //при подсоиденению к серверу
     socket.on('connect', function() {
-      socket.emit('message', 'I\'m connected!');
+      //socket.emit('message', 'I\'m connected!');
     });
+
+    var chat_input = document.getElementById("chat-input-textarea");
+    var chat_messages = document.getElementById("chat_messages");
+
+    var send_message = function(){
+      msg = chat_input.value;
+
+      chat_input.value = null;
+
+      socket.emit('message', msg);
+    };
+
+    var render_message = function(msg){
+      return "<div class='msg'><span class='msg-name'>" + msg.username + "</span><span class='msg-text'>" + msg.text + "</span></div><br>";
+    };
+
+    var render_sys_message = function(msg){
+      return "<p class='sys-msg'>" + msg + "</p>"
+    };
 
     socket.on("new message", function(msg){
       //msg --> chat-message
       console.log(msg.username + ": " + msg.text);
+      chat_messages.innerHTML += render_message(msg);
+    });
+
+    socket.on("new sys message", function(msg){
+      //msg --> chat-message
+      console.log("sys: " + msg);
+      chat_messages.innerHTML += render_sys_message(msg);
     });
 
   </script>
