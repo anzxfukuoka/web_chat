@@ -1,1 +1,1 @@
-web: python init.py
+web: flask run
