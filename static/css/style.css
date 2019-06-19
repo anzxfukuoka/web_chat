@@ -75,7 +75,7 @@ a:hover{
 	font-variant: small-caps;
   font-size: var(--big-font-size);
   display: inline;
-  color: #fff;
+  color: #fff !important;
 }
 
 .title:hover{
