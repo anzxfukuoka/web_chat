@@ -5,9 +5,11 @@ from flask import session, escape, request
 from flask_socketio import SocketIO
 from flask_socketio import send, emit
 
+import os
+
 app = Flask(__name__)
 
-app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
+app.secret_key = b'secret!'
 
 socketio = SocketIO(app)
 
