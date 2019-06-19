@@ -98,4 +98,4 @@ def unauthorized(error):
     return render_template('error_page.html', error=error)
 
 
-app.run(debug = True)
+app.run(host="0.0.0.0", port=int(os.environ.get('PORT', 5000)))
