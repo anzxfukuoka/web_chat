@@ -96,3 +96,6 @@ def unauthorized(error):
 @app.errorhandler(500)
 def unauthorized(error):
     return render_template('error_page.html', error=error)
+
+
+app.run(debug = True)
