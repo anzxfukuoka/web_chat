@@ -48,8 +48,10 @@ a:hover{
 }
 
 .wrapper{
+	width: 100%;
   max-width: var(--content-width);
-  margin: 10px auto;
+  margin: 0px auto;
+	padding: 10px;
 
   display: flex;
   flex-direction: column;
@@ -61,13 +63,14 @@ a:hover{
 
 
 .wrapper > hr{
-  width: var(--content-width);
+  width: 100%;
 }
 
 /* --- HEADER --- */
 
 .header{
   width: 100%;
+	margin-top: 10px:
 }
 
 .title{
@@ -143,9 +146,10 @@ a:hover{
 /*chat messages*/
 
 .chat-messages{
-  flex: 1 1 auto;
+  flex: 1 0 100px;
   padding: 10px;
   margin-bottom: 10px;
+	overflow-y: scroll;
 }
 
 .msg{
@@ -188,7 +192,8 @@ a:hover{
 }
 
 .chat-input-textarea{
-  width: 666px;
+	width: 100%;
+  max-width: 666px;
   padding: 10px;
   border: 1px solid #fff;
   border-radius: 4px;
@@ -200,7 +205,8 @@ a:hover{
 }
 
 .chat-input-post{
-  width: 666px;
+	width: 100%;
+  max-width: 666px;
   padding: 4px;
   background-color: var(--clear-black);
   border: 1px solid #fff;

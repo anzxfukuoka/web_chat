@@ -34,7 +34,7 @@
 
         <div class="chat">
 
-          <div class="chat-messages conteiner" id="chat_messages">
+          <div class="chat-messages conteiner" id="chat_messages" >
 
             <!-- message -->
             <!--
@@ -52,7 +52,7 @@
         </div>
 
           <div class="chat-input">
-            <textarea name="chat-input-textarea" class="chat-input-textarea" id="chat-input-textarea" rows="8" cols="80" onkeydown="if(event.keyCode == 13){send_message(); return false;}"></textarea>
+            <textarea name="chat-input-textarea" class="chat-input-textarea" id="chat-input-textarea" rows="4" cols="80" onkeydown="if(event.keyCode == 13){send_message(); return false;}"></textarea>
             <button type="button" name="chat-input-post" class="chat-input-post" onclick="send_message();">post</button>
           </div>
 
@@ -103,12 +103,14 @@
       //msg --> chat-message
       console.log(msg.username + ": " + msg.text);
       chat_messages.innerHTML += render_message(msg);
+      chat_messages.scrollTo(0,19000);
     });
 
     socket.on("new sys message", function(msg){
       //msg --> chat-message
       console.log("sys: " + msg);
       chat_messages.innerHTML += render_sys_message(msg);
+      chat_messages.scrollTo(0,19000);
     });
 
   </script>
