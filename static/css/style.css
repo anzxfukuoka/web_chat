@@ -162,6 +162,7 @@ a:hover{
   border-radius: 4px;
 
   display: inline-block;
+	word-wrap: break-word;
 }
 
 
@@ -175,7 +176,6 @@ a:hover{
 }
 
 .msg-text{
-
 }
 
 .sys-msg{
