@@ -6,6 +6,8 @@ from flask_socketio import SocketIO
 from flask_socketio import send, emit
 
 import os
+import random
+import string
 
 app = Flask(__name__)
 
@@ -29,7 +31,23 @@ def main():
 @app.route("/login" , methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        session['username'] = request.form['username']
+
+        tmp = request.form['username']
+        tmp = tmp.split("#")
+
+        #пустая строка
+        #надабы пофиксить в js
+        if tmp[0] == "":
+            return render_template('login.html', error="имя не может быть пустым")
+
+        #tripcode
+        if len(tmp) == 2:
+            username = tmp[0] + gen_tripcode(tmp[1])
+        else:
+            username = tmp[0]
+
+        session['username'] = username #request.form['username']
+
         return redirect(url_for('index'))
 
     return render_template('login.html')
@@ -79,7 +97,7 @@ def on_disconnect():
 #tripcode
 
 def gen_tripcode(password):
-        random.seed(app.secret_key)#random.seed(password)
+        random.seed(password)
         a=string.ascii_letters+string.digits+string.digits
         trip='!%s%s%s%s%s%s%s%s%s%s' % (random.choice(a),random.choice(a),random.choice(a),random.choice(a),random.choice(a),random.choice(a),random.choice(a),random.choice(a),random.choice(a),random.choice(a))
         return trip
