@@ -24,7 +24,7 @@
 
       <div class="header">
       <a href="/index" class="title">Night Chat</a>
-        <a href="/logout"><img class="logout-button" src="../static/media/logout.png" alt="выйти"></a>
+        <img class="logout-button" src="../static/media/logout.png" alt="выйти" onclick="leave();">
       </div>
 
       <hr>
@@ -77,7 +77,7 @@
 
     //при подсоиденению к серверу
     socket.on('connect', function() {
-      //socket.emit('message', 'I\'m connected!');
+      socket.emit('join', {});
     });
 
     var chat_input = document.getElementById("chat-input-textarea");
@@ -112,6 +112,25 @@
       chat_messages.innerHTML += render_sys_message(msg);
       chat_messages.scrollTo(0,19000);
     });
+
+    socket.on("not in chat", function(msg){
+      console.log("sys: " + msg);
+      leave();
+    });
+
+    var leave = function() {
+      socket.emit('leave', {}, function() {
+        socket.disconnect();
+        // go back to the login page
+        window.location.href = "{{ url_for('logout') }}";
+      });
+    }
+
+    //window.addEventListener("beforeunload", function (e) {
+    //  var confirmationMessage = "\o/";
+    //  (e || window.event).returnValue = confirmationMessage; //Gecko + IE
+    //  return confirmationMessage;                            //Webkit, Safari, Chrome
+    //});
 
   </script>
   </body>

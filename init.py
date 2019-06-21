@@ -4,10 +4,13 @@ from flask import session, escape, request
 
 from flask_socketio import SocketIO
 from flask_socketio import send, emit
+from flask_socketio import join_room, leave_room
 
 import os
 import random
 import string
+from time import sleep
+from threading import Thread
 
 app = Flask(__name__)
 
@@ -22,11 +25,12 @@ def index():
 @app.route("/")
 def main():
     if 'username' in session:
-        return render_template('index.html')#'Logged in as %s' % escape(session['username'])
+        return render_template('index.html')
     else:
         return redirect(url_for("login"))
 
 #login/logout
+
 
 @app.route("/login" , methods=['GET', 'POST'])
 def login():
@@ -52,6 +56,7 @@ def login():
 
     return render_template('login.html')
 
+
 @app.route('/logout')
 def logout():
     # remove the username from the session if it's there
@@ -59,38 +64,76 @@ def logout():
     return redirect(url_for('login'))
 
 
+@app.route('/log')
+def log():
+    re = ""
+    for msg in messages:
+        re += msg['username'] + ": " + msg["text"] + "<br>"
+    return re
 
 #chat
 #js + socketio
 
-#username, status(online/offline)
+#username: [uid, uid, ...]
 users = {}
-#username, text
-messages = {}
-
-#проблемс:
-#юзкр ушел со странички/разлогинелся, но все еще коннекткд
+#username: text
+messages = []
 
 @socketio.on('message')
 def handle_message(message):
     print(session["username"] + " : " + message)
-    #send(json, json=True)
     #broadcasting
+    if not session.get("username"):
+        emit('not in chat', {})
+
     json = {'username': session["username"], "text": message}
     emit('new message', json, broadcast=True)
-
+    messages.append(json)
 
 @socketio.on('connect')
 def on_connect():
-    print(session["username"] + " connected")
-    emit('new sys message', session["username"] + " connected", broadcast=True)
-    pass
+
+    if users.get(session["username"]):
+        users[session["username"]].append(request.sid) # + id потоков socketio
+        print(session["username"] + "открыл новую вкладку/перезагрузил страницу")
+    else:
+        users.update({session["username"]: [request.sid]}) #был оффлайн, теперт онлайн
+        print(session["username"] + "первый за долгое время раз подключился")
+
+    for msg in messages:
+        json = {'username': msg['username'], "text": msg["text"]}
+        emit('new message', json, broadcast=True)
+
+@socketio.on('join')
+def on_join(data):
+
+    if len(users.get(session["username"])) > 1: #длинна списка id потоков socketio
+        return #уже в чате, может с другой вкладки
+
+    print(session["username"] + " joined")
+    print(request.sid)
+    emit('new sys message', session["username"] + " joined", broadcast=True)
+
+
+@socketio.on('leave')
+def on_leave(data):
+    print(session["username"] + "вышел")
+
+    emit('new sys message', session["username"] + " leaved", broadcast=True)
+    users.pop(session["username"])
+
 
 @socketio.on('disconnect')
-def on_disconnect():
-    print(session["username"] + " disconnected")
-    emit('new sys message', session["username"] + " disconnected", broadcast=True)
-    #timeout to delete from users
+def on_disconnect():#тут может вылететь исключение, ну и хрен с ним
+    print(session["username"] + "пинг не прошел, поток закрывается")
+
+    users[session["username"]].remove(request.sid)
+    if len(users[session["username"]]) == 0:
+        print("последний поток закрался, теперь " + session["username"] + " offline")
+
+        emit('new sys message', session["username"] + " disconnected", broadcast=True)
+        users.pop(session["username"])
+
     pass
 
 
