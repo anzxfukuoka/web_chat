@@ -111,7 +111,8 @@ def on_connect():
 def on_join(data):
 
     if len(users.get(session["username"])) > 1: #длинна списка id потоков socketio
-        return #уже в чате, может с другой вкладки
+        #уже в чате, может с другой вкладки
+        return
 
     print(session["username"] + " joined")
     print(request.sid)
