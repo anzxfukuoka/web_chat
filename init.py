@@ -14,7 +14,7 @@ from threading import Thread
 
 app = Flask(__name__)
 
-app.secret_key = b'secret!'
+app.secret_key = b'efd55366d48baed81238da8273f431b5d25efdf2'
 
 socketio = SocketIO(app)
 
@@ -76,7 +76,7 @@ def log():
 
 #username: [uid, uid, ...]
 users = {}
-#username: text
+#username, text
 messages = []
 
 @socketio.on('message')
@@ -97,12 +97,15 @@ def on_connect():
         users[session["username"]].append(request.sid) # + id потоков socketio
         print(session["username"] + "открыл новую вкладку/перезагрузил страницу")
     else:
-        users.update({session["username"]: [request.sid]}) #был оффлайн, теперт онлайн
+        users.update({session["username"]: [request.sid]}) #был оффлайн, теперь онлайн
         print(session["username"] + "первый за долгое время раз подключился")
 
     for msg in messages:
-        json = {'username': msg['username'], "text": msg["text"]}
-        emit('new message', json, broadcast=True)
+        if not msg.get("username"):
+            emit('new sys message', msg["text"], broadcast=True)
+        else:
+            json = {'username': msg['username'], "text": msg["text"]}
+            emit('new message', json, broadcast=True)
 
 @socketio.on('join')
 def on_join(data):
@@ -113,28 +116,32 @@ def on_join(data):
     print(session["username"] + " joined")
     print(request.sid)
     emit('new sys message', session["username"] + " joined", broadcast=True)
+    messages.append({"text": session["username"] + " joined"})
 
 
 @socketio.on('leave')
 def on_leave(data):
-    print(session["username"] + "вышел")
+    print(session["username"] + " вышел")
 
-    emit('new sys message', session["username"] + " leaved", broadcast=True)
+    emit('new sys message', session["username"] + " left", broadcast=True)
+    messages.append({"text": session["username"] + " left"})
     users.pop(session["username"])
 
 
 @socketio.on('disconnect')
-def on_disconnect():#тут может вылететь исключение, ну и хрен с ним
-    print(session["username"] + "пинг не прошел, поток закрывается")
+def on_disconnect():
+    try:
+        print(session["username"] + "пинг не прошел, поток закрывается")
 
-    users[session["username"]].remove(request.sid)
-    if len(users[session["username"]]) == 0:
-        print("последний поток закрался, теперь " + session["username"] + " offline")
+        users[session["username"]].remove(request.sid)
+        if len(users[session["username"]]) == 0:
+            print("последний поток закрался, теперь " + session["username"] + " offline")
 
-        emit('new sys message', session["username"] + " disconnected", broadcast=True)
-        users.pop(session["username"])
-
-    pass
+            emit('new sys message', session["username"] + " disconnected", broadcast=True)
+            messages.append({"text": session["username"] + " disconnected"})
+            users.pop(session["username"])
+    except:
+        pass
 
 
 #tripcode

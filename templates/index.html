@@ -63,7 +63,7 @@
       <hr>
 
       <div class="footer">
-        <p>https://github.com/anzxfukuoka/web_chat</p>
+        <p>@</p>
       </div>
 
     </div>
@@ -71,67 +71,6 @@
     <script type="text/javascript" src="/static/js/random_background.js"></script>
 
     <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js" integrity="sha256-yr4fRk/GU1ehYJPAs8P4JlTgu0Hdsp4ZKrx8bDEDC3I=" crossorigin="anonymous"></script>
-    <script type="text/javascript" charset="utf-8">
-
-    var socket = io();
-
-    //при подсоиденению к серверу
-    socket.on('connect', function() {
-      socket.emit('join', {});
-    });
-
-    var chat_input = document.getElementById("chat-input-textarea");
-    var chat_messages = document.getElementById("chat_messages");
-
-    var send_message = function(){
-      msg = chat_input.value;
-
-      chat_input.value = null;
-
-      socket.emit('message', msg);
-    };
-
-    var render_message = function(msg){
-      return "<div class='msg'><span class='msg-name'>" + msg.username + "</span><span class='msg-text'>" + msg.text + "</span></div><br>";
-    };
-
-    var render_sys_message = function(msg){
-      return "<p class='sys-msg'>" + msg + "</p>"
-    };
-
-    socket.on("new message", function(msg){
-      //msg --> chat-message
-      console.log(msg.username + ": " + msg.text);
-      chat_messages.innerHTML += render_message(msg);
-      chat_messages.scrollTo(0,19000);
-    });
-
-    socket.on("new sys message", function(msg){
-      //msg --> chat-message
-      console.log("sys: " + msg);
-      chat_messages.innerHTML += render_sys_message(msg);
-      chat_messages.scrollTo(0,19000);
-    });
-
-    socket.on("not in chat", function(msg){
-      console.log("sys: " + msg);
-      leave();
-    });
-
-    var leave = function() {
-      socket.emit('leave', {}, function() {
-        socket.disconnect();
-        // go back to the login page
-        window.location.href = "{{ url_for('logout') }}";
-      });
-    }
-
-    //window.addEventListener("beforeunload", function (e) {
-    //  var confirmationMessage = "\o/";
-    //  (e || window.event).returnValue = confirmationMessage; //Gecko + IE
-    //  return confirmationMessage;                            //Webkit, Safari, Chrome
-    //});
-
-  </script>
+    <script type="text/javascript" src="/static/js/chat-message-handler.js" charset="utf-8"></script>
   </body>
 </html>
